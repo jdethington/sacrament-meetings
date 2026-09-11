@@ -7,6 +7,8 @@ export default async function MeetingsPage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/meetings`;
   console.log("API URL:", apiUrl); // Log the API URL for debugging
   const response = await fetch(apiUrl);
+  const responseText = await response.text();
+  console.log("API Response:", responseText.substring(0, 500)); // Log the response body for debugging
   console.log("API Status:", response.status); // Log the response status for debugging
   console.log("API content-type:", response.headers.get("content-type")); // Log the content type for debugging
   if (!response.ok) {
