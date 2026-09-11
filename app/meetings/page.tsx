@@ -1,8 +1,10 @@
 import MeetingCard from "@/components/MeetingCard";
-import { getMeetings } from "@/lib/meetings-db";
+import { SacramentMeeting } from "@/lib/types";
 
-export default function MeetingsPage() {
-  const sortedMeetings = getMeetings().sort(
+export default async function MeetingsPage() {
+  const response = await fetch("http://localhost:3000/api/meetings");
+  const meetings: SacramentMeeting[] = await response.json();
+  const sortedMeetings = meetings.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
 
