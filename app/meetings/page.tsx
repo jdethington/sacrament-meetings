@@ -1,28 +1,17 @@
 import MeetingCard from "@/components/MeetingCard";
-import { SacramentMeeting } from "@/lib/types";
+// import { SacramentMeeting } from "@/lib/types";
+import { getMeetings } from "@/lib/meetings-db";
 
 export const dynamic = "force-dynamic";
 
 export default async function MeetingsPage() {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/meetings`;
-  const baseUrl = `https://${process.env.VERCEL_URL}`;
-  console.log("VERCEL_URL:", baseUrl); // Log the base URL for debugging
-  console.log("API URL:", `${baseUrl}/api/meetings`); // Log the API URL for debugging
-  const response = await fetch(`${baseUrl}/api/meetings`);
-  const responseText = await response.text();
-  console.log("API Response:", responseText.substring(0, 500)); // Log the response body for debugging
-  console.log("API Status:", response.status); // Log the response status for debugging
-  console.log("API content-type:", response.headers.get("content-type")); // Log the content type for debugging
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(
-      `API request failed: ${response.status} ${response.statusText}\n${text}`,
-    );
-  }
   // const response = await fetch(
   //   `${process.env.NEXT_PUBLIC_BASE_URL}/api/meetings`,
   // );
-  const meetings: SacramentMeeting[] = await response.json();
+  // const meetings: SacramentMeeting[] = await response.json();
+
+  const meetings = getMeetings();
+
   const sortedMeetings = meetings.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
