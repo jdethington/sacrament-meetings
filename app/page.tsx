@@ -5,12 +5,14 @@ export default function Home() {
     <div className="">
       <main className="">
         <h2>Welcome to the Catalina Ward Sacrament Meeting page.</h2>
-        {/* <Image
-          src="https://"
-          alt="Sacrament Meeting"
-          width={1200}
-          height={800}
-        /> */}
+        <Image
+          src="/gilbert-arizona-temple-evening.jpeg"
+          alt="Gilbert Arizona Temple"
+          width={1920}
+          height={1280}
+          loading="eager"
+          fetchPriority="high"
+        />
       </main>
     </div>
   );

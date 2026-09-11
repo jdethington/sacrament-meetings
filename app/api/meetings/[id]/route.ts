@@ -15,5 +15,6 @@ export async function GET(
   if (!meeting) {
     return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
   }
-  return NextResponse.json(meeting);
+  // How to return response.ok ?
+  return NextResponse.json(meeting, { status: 200 });
 }

@@ -7,11 +7,13 @@ export default async function MeetingsId({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const response = await fetch(`http://localhost:3000/api/meetings/${id}`);
-  const meeting: SacramentMeeting = await response.json();
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/meetings/${id}`,
+  );
+  const sMeeting: SacramentMeeting = await response.json();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      {<MeetingDetails meeting={meeting} />}
+      <MeetingDetails meeting={sMeeting} />
     </div>
   );
 }
