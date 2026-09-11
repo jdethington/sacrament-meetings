@@ -5,8 +5,10 @@ export const dynamic = "force-dynamic";
 
 export default async function MeetingsPage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/meetings`;
-  console.log("API URL:", apiUrl); // Log the API URL for debugging
-  const response = await fetch(apiUrl);
+  const baseUrl = `https://${process.env.VERCEL_URL}`;
+  console.log("VERCEL_URL:", baseUrl); // Log the base URL for debugging
+  console.log("API URL:", `${baseUrl}/api/meetings`); // Log the API URL for debugging
+  const response = await fetch(`${baseUrl}/api/meetings`);
   const responseText = await response.text();
   console.log("API Response:", responseText.substring(0, 500)); // Log the response body for debugging
   console.log("API Status:", response.status); // Log the response status for debugging
