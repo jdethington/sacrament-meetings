@@ -3,16 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/meetings", label: "Meetings" },
-];
-
 export default function NavLinks() {
-  const pathname = usePathname();
+    const pathname = usePathname();
+    const links = [
+      { href: "/", label: "Home" },
+      { href: "/meetings", label: "Meetings" },
+    ];
+    
   return (
     <nav aria-label="primary" className="flex gap-2">
-      {navLinks.map((link) => (
+      {links.map((link) => (
         <Link
           key={link.href}
           href={link.href}
