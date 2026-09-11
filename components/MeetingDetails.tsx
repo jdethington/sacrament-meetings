@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 import { SacramentMeeting } from "@/lib/types";
 
 interface MeetingDetailsProps {
@@ -18,6 +18,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
           {meeting.presiding}
         </span>
       </div>
+
       <div className="space-y-6 text-slate-700">
         <div className="flex justify-between border-b border-slate-50 pb-2">
           <span className="font-medium text-slate-500">Conducting</span>
@@ -26,13 +27,13 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
           </span>
         </div>
 
-        {/* {meeting.wardBusiness && meeting.wardBusiness.length > 0 && (
+        {meeting.announcements && meeting.announcements.length > 0 && (
           <div className="bg-amber-50/60 border border-amber-100 rounded-xl p-4">
             <h4 className="font-bold text-amber-900 text-sm mb-2 uppercase tracking-wide">
-              Ward Business
+              Announcements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-sm text-amber-800">
-              {meeting.wardBusiness.map((item, idx) => (
+              {meeting.announcements.map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
@@ -47,7 +48,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
             <div>
               <p className="text-xs text-slate-400">Opening Hymn</p>
               <p className="font-medium text-slate-900">
-                {meeting.openingHymn}
+                {meeting.openingHymn.number} - {meeting.openingHymn.title}
               </p>
             </div>
             <div>
@@ -56,10 +57,29 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
                 {meeting.openingPrayer}
               </p>
             </div>
+
+            {meeting.wardBusiness.length > 0 && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Ward Business</p>
+                <ul className="list-disc list-inside space-y-1 text-sm text-slate-800">
+                  {meeting.wardBusiness.map((item, idx) => (
+                    <li key={idx}>{item.description}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {meeting.stakeBusiness && (
+              <div>
+                <p className="text-xs text-slate-400 mb-1">Stake Business</p>
+                <p className="font-medium text-slate-900">Yes</p>
+              </div>
+            )}
+
             <div>
               <p className="text-xs text-slate-400">Sacrament Hymn</p>
               <p className="font-medium text-slate-900">
-                {meeting.sacramentHymn}
+                {meeting.sacramentHymn.number} - {meeting.sacramentHymn.title}
               </p>
             </div>
           </div>
@@ -76,7 +96,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
                     key={idx}
                     className="font-medium text-slate-900 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100"
                   >
-                    {speaker}
+                    {speaker.name} - {speaker.topic} ({speaker.type})
                   </li>
                 ))}
               </ul>
@@ -84,7 +104,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
             <div className="pt-2">
               <p className="text-xs text-slate-400">Closing Hymn</p>
               <p className="font-medium text-slate-900">
-                {meeting.closingHymn}
+                {meeting.closingHymn.number} - {meeting.closingHymn.title}
               </p>
             </div>
             <div>
@@ -94,7 +114,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailsProps) {
               </p>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

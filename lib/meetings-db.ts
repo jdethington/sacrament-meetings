@@ -116,8 +116,8 @@ const meetings: SacramentMeeting[] = [
     announcements: ["Ward temple night: May 10"],
   },
   {
-    id: 6,
-    date: "2026-10-4",
+    id: 7,
+    date: "2026-10-04",
     meetingType: "general",
     presiding: "Bishop Smith",
     conducting: "Brother Jones",
