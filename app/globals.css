@@ -2,7 +2,9 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1f2937;
+  --header-footer-background: #1f2937;
+  --header-footer-foreground: #ffffff;
 }
 
 @theme inline {
@@ -14,7 +16,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1f2937;
     --foreground: #ededed;
   }
 }
@@ -23,4 +25,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+header,
+footer {
+  background-color: var(--header-footer-background);
+  color: var(--header-footer-foreground);
+  padding: 1rem;
+  text-align: center;
 }
