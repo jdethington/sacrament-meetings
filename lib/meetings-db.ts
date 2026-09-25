@@ -1,166 +1,101 @@
+import { neon } from "@neondatabase/serverless";
 import type { SacramentMeeting } from "./types";
 
-const meetings: SacramentMeeting[] = [
-  {
-    id: 1,
-    date: "2026-09-06",
-    meetingType: "testimony",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 2,
-    date: "2026-05-03",
-    meetingType: "regular",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 3,
-    date: "2026-05-17",
-    meetingType: "regular",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 4,
-    date: "2026-05-24",
-    meetingType: "regular",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 5,
-    date: "2026-05-31",
-    meetingType: "regular",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 6,
-    date: "2026-11-22",
-    meetingType: "stake",
-    presiding: "President Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 7,
-    date: "2026-10-04",
-    meetingType: "general",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  {
-    id: 8,
-    date: "2026-09-13",
-    meetingType: "regular",
-    presiding: "Bishop Smith",
-    conducting: "Brother Jones",
-    openingHymn: { number: 2, title: "The Spirit of God" },
-    openingPrayer: "Sister Williams",
-    wardBusiness: [{ description: "Sustaining of new Primary president" }],
-    stakeBusiness: false,
-    sacramentHymn: { number: 169, title: "In Remembrance of Thy Suffering" },
-    speakers: [
-      { name: "Sister Brown", topic: "Faith in Jesus Christ", type: "speaker" },
-      { name: "Youth Choir", topic: "", type: "musical-number" },
-    ],
-    closingHymn: { number: 31, title: "O God, Our Help in Ages Past" },
-    closingPrayer: "Brother Davis",
-    announcements: ["Ward temple night: May 10"],
-  },
-  // ... add remaining records
-];
+// const sql = neon(process.env.DATABASE_URL!);
 
-export function getMeetings(date?: string | null): SacramentMeeting[] {
-  if (date) return meetings.filter((m) => m.date === date);
-  return meetings;
+const ITEMS_PER_PAGE = 6;
+
+function getSql() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("DATABASE_URL is not configured");
+  }
+  return neon(process.env.DATABASE_URL);
 }
 
-export function getMeetingById(id: number): SacramentMeeting | null {
-  return meetings.find((m) => m.id === id) ?? null;
+export async function getMeetings(
+  query: string = "",
+  currentPage: number = 1,
+): Promise<SacramentMeeting[]> {
+  const searchTerm = `%${query}%`;
+  const offset = (Math.max(currentPage, 1) - 1) * ITEMS_PER_PAGE;
+
+  const rows = await getSql()`
+    SELECT
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type                AS "meetingType",
+      presiding, conducting, announcements,
+      opening_hymn                AS "openingHymn",
+      opening_prayer              AS "openingPrayer",
+      ward_business               AS "wardBusiness",
+      stake_business              AS "stakeBusiness",
+      sacrament_hymn              AS "sacramentHymn",
+      speakers,
+      closing_hymn                AS "closingHymn",
+      closing_prayer              AS "closingPrayer"
+    FROM meetings
+    WHERE
+      presiding     ILIKE ${searchTerm}
+      OR conducting ILIKE ${searchTerm}
+      OR meeting_type ILIKE ${searchTerm}
+      OR speakers::text ILIKE ${searchTerm}
+    ORDER BY date DESC
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+  `;
+  return rows as unknown as SacramentMeeting[];
 }
+
+export async function getMeetingsTotalPages(
+  query: string = "",
+): Promise<number> {
+  const searchTerm = `%${query}%`;
+  const rows = await getSql()`
+    SELECT COUNT(*) FROM meetings
+    WHERE
+      presiding     ILIKE ${searchTerm}
+      OR conducting ILIKE ${searchTerm}
+      OR meeting_type ILIKE ${searchTerm}
+      OR speakers::text ILIKE ${searchTerm}
+  `;
+  return Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+}
+
+export async function getMeetingById(
+  id: number,
+): Promise<SacramentMeeting | null> {
+  const rows = await getSql()`
+    SELECT
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type                AS "meetingType",
+      presiding, conducting, announcements,
+      opening_hymn                AS "openingHymn",
+      opening_prayer              AS "openingPrayer",
+      ward_business               AS "wardBusiness",
+      stake_business              AS "stakeBusiness",
+      sacrament_hymn              AS "sacramentHymn",
+      speakers,
+      closing_hymn                AS "closingHymn",
+      closing_prayer              AS "closingPrayer"
+    FROM meetings WHERE id = ${id}
+  `;
+  return (rows[0] as unknown as SacramentMeeting) ?? null;
+}
+
+// Mutation stubs — Week 04
+// export async function addMeeting(
+//   data: Omit<SacramentMeeting, "id">,
+// ): Promise<SacramentMeeting> {
+//   throw new Error("addMeeting: database implementation coming in Week 04");
+// }
+
+// export async function updateMeeting(
+//   id: number,
+//   updates: Partial<SacramentMeeting>,
+// ): Promise<SacramentMeeting | null> {
+//   throw new Error("updateMeeting: database implementation coming in Week 04");
+// }
+
+// export async function deleteMeeting(id: number): Promise<boolean> {
+//   throw new Error("deleteMeeting: database implementation coming in Week 04");
+// }
