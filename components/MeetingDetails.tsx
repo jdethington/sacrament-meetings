@@ -1,121 +1,176 @@
-// import Link from "next/link";
-import { SacramentMeeting } from "@/lib/types";
+import type { SacramentMeeting } from "@/lib/types";
 
 interface MeetingDetailsProps {
   meeting: SacramentMeeting;
 }
 
-export default function MeetingDetails({ meeting }: MeetingDetailsProps) {
+function formatDate(iso: string) {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function ProgramLine({ label, value }: { label: string; value: string }) {
   return (
-    <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-sm p-8 md:p-12">
-      <h3 className="text-2xl font-bold text-slate-900 mb-4">{meeting.date}</h3>
-      <p className="text-sm text-slate-500 mb-6">
-        <strong>Meeting Type:</strong> {meeting.meetingType}
-      </p>
-      <div className="flex justify-between border-b border-slate-50 pb-2 mb-6">
-        <span className="font-medium text-slate-500">Presiding</span>
-        <span className="font-semibold text-slate-900">
-          {meeting.presiding}
-        </span>
+    <div className="flex items-baseline gap-1 text-base leading-relaxed text-black">
+      <span className="shrink-0 font-medium">{label}</span>
+      <span
+        className="flex-1 border-b border-dotted border-black/40 min-w-[1rem] translate-y-[-2px]"
+        aria-hidden
+      />
+      <span className="shrink-0 text-right font-normal">{value}</span>
+    </div>
+  );
+}
+
+function HymnBlock({
+  label,
+  number,
+  title,
+}: {
+  label: string;
+  number: number;
+  title: string;
+}) {
+  return (
+    <div className="space-y-1">
+      <ProgramLine label={label} value={`No. ${number}`} />
+      <p className="text-center italic text-black text-base">{title}</p>
+    </div>
+  );
+}
+
+export default function MeetingDetails({ meeting }: MeetingDetailsProps) {
+  const speakers = meeting.speakers ?? [];
+  const hasWardBusiness = meeting.wardBusiness?.length > 0;
+  const hasAnnouncements =
+    meeting.announcements && meeting.announcements.length > 0;
+
+  return (
+    <article
+      className="
+        w-full max-w-3xl
+        bg-white text-black
+        border border-black/15 shadow-sm
+        px-10 py-12 sm:px-16 sm:py-14
+        font-serif
+        print:max-w-none print:shadow-none print:border-0
+        print:px-0 print:py-0
+      "
+    >
+      {/* Header */}
+      <div className="text-center mb-10 space-y-1 bg-white text-black print:mb-6">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-black print:text-[16pt]">
+          Sacrament Meeting
+        </h1>
+        <p className="text-lg text-black">Catalina Ward</p>
+        <p className="text-lg text-black">{formatDate(meeting.date)}</p>
+        {meeting.meetingType && meeting.meetingType !== "regular" && (
+          <p className="text-sm uppercase tracking-wide text-black/70 pt-1">
+            {meeting.meetingType} meeting
+          </p>
+        )}
       </div>
 
-      <div className="space-y-6 text-slate-700">
-        <div className="flex justify-between border-b border-slate-50 pb-2">
-          <span className="font-medium text-slate-500">Conducting</span>
-          <span className="font-semibold text-slate-900">
-            {meeting.conducting}
-          </span>
-        </div>
+      {/* Leadership */}
+      <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+        <ProgramLine label="Presiding" value={meeting.presiding || "—"} />
+        <ProgramLine label="Conducting" value={meeting.conducting || "—"} />
+      </section>
 
-        {meeting.announcements && meeting.announcements.length > 0 && (
-          <div className="bg-amber-50/60 border border-amber-100 rounded-xl p-4">
-            <h4 className="font-bold text-amber-900 text-sm mb-2 uppercase tracking-wide">
-              Announcements
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-sm text-amber-800">
-              {meeting.announcements.map((item, idx) => (
-                <li key={idx}>{item}</li>
-              ))}
-            </ul>
-          </div>
+      {/* Opening */}
+      <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+        {meeting.openingHymn?.number != null && (
+          <HymnBlock
+            label="Opening Hymn"
+            number={meeting.openingHymn.number}
+            title={meeting.openingHymn.title || ""}
+          />
         )}
+        <ProgramLine
+          label="Invocation"
+          value={meeting.openingPrayer || "By Invitation"}
+        />
+      </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <div className="space-y-4">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400">
-              Program
-            </h4>
+      {/* Announcements / business */}
+      {(hasAnnouncements || hasWardBusiness || meeting.stakeBusiness) && (
+        <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+          {hasAnnouncements && (
             <div>
-              <p className="text-xs text-slate-400">Opening Hymn</p>
-              <p className="font-medium text-slate-900">
-                {meeting.openingHymn.number} - {meeting.openingHymn.title}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400">Opening Prayer</p>
-              <p className="font-medium text-slate-900">
-                {meeting.openingPrayer}
-              </p>
-            </div>
-
-            {meeting.wardBusiness.length > 0 && (
-              <div>
-                <p className="text-xs text-slate-400 mb-1">Ward Business</p>
-                <ul className="list-disc list-inside space-y-1 text-sm text-slate-800">
-                  {meeting.wardBusiness.map((item, idx) => (
-                    <li key={idx}>{item.description}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {meeting.stakeBusiness && (
-              <div>
-                <p className="text-xs text-slate-400 mb-1">Stake Business</p>
-                <p className="font-medium text-slate-900">Yes</p>
-              </div>
-            )}
-
-            <div>
-              <p className="text-xs text-slate-400">Sacrament Hymn</p>
-              <p className="font-medium text-slate-900">
-                {meeting.sacramentHymn.number} - {meeting.sacramentHymn.title}
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400">
-              Speakers & Closing
-            </h4>
-            <div>
-              <p className="text-xs text-slate-400 mb-1">Speakers</p>
-              <ul className="space-y-1">
-                {meeting.speakers.map((speaker, idx) => (
-                  <li
-                    key={idx}
-                    className="font-medium text-slate-900 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100"
-                  >
-                    {speaker.name} - {speaker.topic} ({speaker.type})
-                  </li>
+              <p className="font-semibold mb-1">Announcements</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                {meeting.announcements!.map((a, i) => (
+                  <li key={i}>{a}</li>
                 ))}
               </ul>
             </div>
-            <div className="pt-2">
-              <p className="text-xs text-slate-400">Closing Hymn</p>
-              <p className="font-medium text-slate-900">
-                {meeting.closingHymn.number} - {meeting.closingHymn.title}
-              </p>
-            </div>
+          )}
+          {hasWardBusiness && (
             <div>
-              <p className="text-xs text-slate-400">Closing Prayer</p>
-              <p className="font-medium text-slate-900">
-                {meeting.closingPrayer}
-              </p>
+              <p className="font-semibold mb-1">Ward Business</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                {meeting.wardBusiness.map((item, i) => (
+                  <li key={i}>{item.description}</li>
+                ))}
+              </ul>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          )}
+          {meeting.stakeBusiness && <p>Stake Business will be conducted.</p>}
+        </section>
+      )}
+
+      {/* Sacrament */}
+      <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+        {meeting.sacramentHymn?.number != null && (
+          <HymnBlock
+            label="Sacrament Hymn"
+            number={meeting.sacramentHymn.number}
+            title={meeting.sacramentHymn.title || ""}
+          />
+        )}
+        <p className="text-center font-semibold text-black py-1">
+          Administration of the Sacrament
+        </p>
+      </section>
+
+      {/* Speakers / musical numbers */}
+      {speakers.length > 0 && (
+        <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+          {speakers.map((s, i) => (
+            <div key={i}>
+              {s.type === "musical-number" ? (
+                <ProgramLine label="Musical Number" value={s.name || "—"} />
+              ) : (
+                <ProgramLine label="Speaker" value={s.name || "—"} />
+              )}
+              {s.topic ? (
+                <p className="text-center italic text-black text-[15px]">
+                  {s.topic}
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Closing */}
+      <section className="space-y-2 mb-8 print:mb-5 print:space-y-2">
+        {meeting.closingHymn?.number != null && (
+          <HymnBlock
+            label="Closing Hymn"
+            number={meeting.closingHymn.number}
+            title={meeting.closingHymn.title || ""}
+          />
+        )}
+        <ProgramLine
+          label="Benediction"
+          value={meeting.closingPrayer || "By Invitation"}
+        />
+      </section>
+    </article>
   );
 }
