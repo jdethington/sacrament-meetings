@@ -21,13 +21,64 @@
   }
 }
 
+@media print {
+  body > header,
+  body > footer,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body * {
+    min-height: 0 !important;
+  }
+
+  @page {
+    size: letter;
+    margin: 0.6in;
+  }
+
+  article {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: avoid;
+  }
+
+  article h1 {
+    font-size: 20pt !important;
+    margin-bottom: 0.2in !important;
+  }
+
+  article section {
+    margin-bottom: 0.28in !important;
+  }
+}
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-header,
-footer {
+
+body > header,
+body > footer {
   background-color: var(--header-footer-background);
   color: var(--header-footer-foreground);
   padding: 1rem;

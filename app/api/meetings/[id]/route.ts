@@ -11,10 +11,9 @@ export async function GET(
   if (isNaN(id)) {
     return NextResponse.json({ error: "Invalid meeting ID" }, { status: 400 });
   }
-  const meeting = getMeetingById(id);
+  const meeting = await getMeetingById(id);
   if (!meeting) {
     return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
   }
-  // How to return response.ok ?
   return NextResponse.json(meeting, { status: 200 });
 }
