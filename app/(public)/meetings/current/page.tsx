@@ -1,5 +1,7 @@
-import { getMeetings } from "@/lib/meetings-db";
+import { getMeetingByDate } from "@/lib/meetings-db";
 import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 export default async function CurrentMeetings() {
   const today = new Date();
@@ -8,12 +10,16 @@ export default async function CurrentMeetings() {
   const sunday = new Date(today);
   sunday.setDate(today.getDate() - dayOfWeek);
 
-  const dateString = sunday.toISOString().split("T")[0];
+  // Local YYYY-MM-DD (avoid UTC shift from toISOString)
+  const y = sunday.getFullYear();
+  const m = String(sunday.getMonth() + 1).padStart(2, "0");
+  const d = String(sunday.getDate()).padStart(2, "0");
+  const dateString = `${y}-${m}-${d}`;
 
-  const meetings = await getMeetings(dateString);
+  const meeting = await getMeetingByDate(dateString);
 
-  if (meetings.length > 0) {
-    redirect(`/meetings/${meetings[0].id}`);
+  if (meeting) {
+    redirect(`/meetings/${meeting.id}`);
   }
 
   redirect(`/meetings?date=${dateString}`);

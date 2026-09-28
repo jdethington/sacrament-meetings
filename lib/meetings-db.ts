@@ -39,6 +39,7 @@ export async function getMeetings(
       OR conducting ILIKE ${searchTerm}
       OR meeting_type ILIKE ${searchTerm}
       OR speakers::text ILIKE ${searchTerm}
+      OR date::text ILIKE ${searchTerm}
     ORDER BY date DESC
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
   `;
@@ -58,6 +59,30 @@ export async function getMeetingsTotalPages(
       OR speakers::text ILIKE ${searchTerm}
   `;
   return Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+}
+
+export async function getMeetingByDate(
+  date: string, // 'YYYY-MM-DD'
+): Promise<SacramentMeeting | null> {
+  const rows = await getSql()`
+    SELECT
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type                AS "meetingType",
+      presiding, conducting, announcements,
+      opening_hymn                AS "openingHymn",
+      opening_prayer              AS "openingPrayer",
+      ward_business               AS "wardBusiness",
+      stake_business              AS "stakeBusiness",
+      sacrament_hymn              AS "sacramentHymn",
+      speakers,
+      closing_hymn                AS "closingHymn",
+      closing_prayer              AS "closingPrayer"
+    FROM meetings
+    WHERE date = ${date}::date
+    LIMIT 1
+  `;
+  return (rows[0] as unknown as SacramentMeeting) ?? null;
 }
 
 export async function getMeetingById(
@@ -120,13 +145,13 @@ export async function updateMeetingDb(
       presiding = ${data.presiding},
       conducting = ${data.conducting},
       announcements = ${data.announcements ?? []},
-      opening_hymn = ${JSON.stringify(data.openingHymn)},
+      opening_hymn = ${data.openingHymn},
       opening_prayer = ${data.openingPrayer},
-      ward_business = ${JSON.stringify(data.wardBusiness ?? [])},
+      ward_business = ${data.wardBusiness ?? []},
       stake_business = ${data.stakeBusiness},
-      sacrament_hymn = ${JSON.stringify(data.sacramentHymn)},
-      speakers = ${JSON.stringify(data.speakers ?? [])},
-      closing_hymn = ${JSON.stringify(data.closingHymn)},
+      sacrament_hymn = ${data.sacramentHymn},
+      speakers = ${data.speakers ?? []},
+      closing_hymn = ${data.closingHymn},
       closing_prayer = ${data.closingPrayer}
     WHERE id = ${id}
   `;
