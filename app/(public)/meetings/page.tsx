@@ -3,6 +3,7 @@ import { getMeetings, getMeetingsTotalPages } from "@/lib/meetings-db";
 import MeetingCard from "@/components/MeetingCard";
 import { MeetingSearch } from "@/components/MeetingSearch";
 import { Pagination } from "@/components/Pagination";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +21,15 @@ export default async function MeetingsPage(props: {
 
   return (
     <section className="flex flex-col items-center min-h-screen py-8 px-4">
-      <h1 className="text-4xl font-bold mb-6">Upcoming Sacrament Meetings</h1>
-
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-6xl mb-6">
+        <h1 className="text-4xl font-bold">Upcoming Sacrament Meetings</h1>
+        <Link
+          href="/meetings/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          + New Meeting
+        </Link>
+      </div>
       <div className="w-full max-w-md mb-8">
         <Suspense
           fallback={<div className="h-10 bg-gray-100 rounded animate-pulse" />}
@@ -29,7 +37,6 @@ export default async function MeetingsPage(props: {
           <MeetingSearch />
         </Suspense>
       </div>
-
       {meetings.length === 0 ? (
         <p className="text-gray-600">No meetings found.</p>
       ) : (
@@ -39,7 +46,6 @@ export default async function MeetingsPage(props: {
           ))}
         </div>
       )}
-
       <Suspense fallback={null}>
         <Pagination totalPages={totalPages} />
       </Suspense>

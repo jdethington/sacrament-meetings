@@ -2,6 +2,7 @@
 import MeetingDetails from "@/components/MeetingDetails";
 import PrintButton from "@/components/PrintButton";
 import { getMeetingById } from "@/lib/meetings-db";
+import { notFound } from "next/navigation";
 
 export default async function MeetingIdPage({
   params,
@@ -10,13 +11,13 @@ export default async function MeetingIdPage({
 }) {
   const id = Number((await params).id);
   if (Number.isNaN(id)) {
-    return <p className="p-8 text-center">Invalid meeting ID.</p>;
+    notFound();
   }
 
   const meeting = await getMeetingById(id);
 
   if (!meeting) {
-    return <p className="p-8 text-center">Meeting not found.</p>;
+    notFound();
   }
 
   return (

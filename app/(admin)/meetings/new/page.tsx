@@ -1,13 +1,12 @@
 // Create Meeting -- Coming in Week 04
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { createMeeting } from "@/lib/actions";
+import MeetingForm from "@/components/MeetingForm";
+
+export default function NewMeetingPage() {
   return (
-    <section className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold mb-4">Admin</h1>
-      {children}
+    <section className="min-h-screen py-8 px-4">
+      <h1 className="text-3xl font-bold text-center mb-8">Create Meeting</h1>
+      <MeetingForm action={createMeeting} submitLabel="Save Meeting" />
     </section>
   );
 }

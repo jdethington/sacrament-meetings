@@ -1,0 +1,78 @@
+
+> sacrament-meetings@0.1.0 dev
+> next dev
+
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.86:3000
+- Environments: .env.local
+✓ Ready in 631ms
+✓ Running next.config.ts took 58ms
+
+ GET /meetings/current 200 in 1846ms (next.js: 576ms, application-code: 1271ms)
+⨯ Error [NeonDbError]: invalid input syntax for type bigint: "NaN"
+    at async getMeetings (lib\meetings-db.ts:22:16)
+    at async GET (app\api\meetings\route.ts:11:20)
+  20 |   const offset = (Math.max(currentPage, 1) - 1) * ITEMS_PER_PAGE;
+  21 |
+> 22 |   const rows = await getSql()`
+     |                ^
+  23 |     SELECT
+  24 |       id,
+  25 |       to_char(date, 'YYYY-MM-DD') AS "date", {
+  severity: 'ERROR',
+  code: '22P02',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: "unnamed portal parameter $6 = '...'",
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'numutils.c',
+  line: '876',
+  routine: 'pg_strtoint64_safe',
+  sourceError: undefined
+}
+ GET /api/meetings?page=abc 500 in 1286ms (next.js: 849ms, application-code: 437ms)
+ GET /api/meetings?page=-3 200 in 196ms (next.js: 4ms, application-code: 192ms)
+ GET /api/meetings 200 in 137ms (next.js: 9ms, application-code: 128ms)
+ GET /api/meetings/abc 400 in 1534ms (next.js: 1521ms, application-code: 13ms)
+ GET /api/meetings/999999 404 in 700ms (next.js: 9ms, application-code: 690ms)
+ GET /admin/meetings 404 in 325ms (next.js: 280ms, application-code: 46ms)
+ GET /meetings/current 200 in 267ms (next.js: 7ms, application-code: 260ms)
+⨯ Error [NeonDbError]: invalid input syntax for type bigint: "NaN"
+    at async getMeetings (lib\meetings-db.ts:22:16)
+    at async GET (app\api\meetings\route.ts:11:20)
+  20 |   const offset = (Math.max(currentPage, 1) - 1) * ITEMS_PER_PAGE;
+  21 |
+> 22 |   const rows = await getSql()`
+     |                ^
+  23 |     SELECT
+  24 |       id,
+  25 |       to_char(date, 'YYYY-MM-DD') AS "date", {
+  severity: 'ERROR',
+  code: '22P02',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: "unnamed portal parameter $6 = '...'",
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'numutils.c',
+  line: '876',
+  routine: 'pg_strtoint64_safe',
+  sourceError: undefined
+}
+ GET /api/meetings?page=abc 500 in 83ms (next.js: 3ms, application-code: 80ms)
+ GET /api/meetings?page=-3 200 in 82ms (next.js: 5ms, application-code: 77ms)
+ GET /api/meetings?page=1 200 in 82ms (next.js: 6ms, application-code: 76ms)

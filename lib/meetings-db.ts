@@ -83,19 +83,56 @@ export async function getMeetingById(
 }
 
 // Mutation stubs — Week 04
-// export async function addMeeting(
-//   data: Omit<SacramentMeeting, "id">,
-// ): Promise<SacramentMeeting> {
-//   throw new Error("addMeeting: database implementation coming in Week 04");
-// }
+export async function addMeeting(
+  data: Omit<SacramentMeeting, "id">,
+): Promise<void> {
+  const sql = getSql();
+  await sql`
+    INSERT INTO meetings (
+      date, meeting_type, presiding, conducting, announcements, opening_hymn, opening_prayer, ward_business, stake_business, sacrament_hymn, speakers, closing_hymn, closing_prayer
+    ) VALUES (
+      ${data.date},
+      ${data.meetingType},
+      ${data.presiding},
+      ${data.conducting},
+      ${data.announcements ?? []},
+      ${JSON.stringify(data.openingHymn)},
+      ${data.openingPrayer},
+      ${JSON.stringify(data.wardBusiness ?? [])},
+      ${data.stakeBusiness},
+      ${JSON.stringify(data.sacramentHymn)},
+      ${JSON.stringify(data.speakers ?? [])},
+      ${JSON.stringify(data.closingHymn)},
+      ${data.closingPrayer}
+    )
+  `;
+}
 
-// export async function updateMeeting(
-//   id: number,
-//   updates: Partial<SacramentMeeting>,
-// ): Promise<SacramentMeeting | null> {
-//   throw new Error("updateMeeting: database implementation coming in Week 04");
-// }
+export async function updateMeetingDb(
+  id: number,
+  data: Omit<SacramentMeeting, "id">,
+): Promise<void> {
+  const sql = getSql();
+  await sql`
+    UPDATE meetings SET
+      date = ${data.date},
+      meeting_type = ${data.meetingType},
+      presiding = ${data.presiding},
+      conducting = ${data.conducting},
+      announcements = ${data.announcements ?? []},
+      opening_hymn = ${JSON.stringify(data.openingHymn)},
+      opening_prayer = ${data.openingPrayer},
+      ward_business = ${JSON.stringify(data.wardBusiness ?? [])},
+      stake_business = ${data.stakeBusiness},
+      sacrament_hymn = ${JSON.stringify(data.sacramentHymn)},
+      speakers = ${JSON.stringify(data.speakers ?? [])},
+      closing_hymn = ${JSON.stringify(data.closingHymn)},
+      closing_prayer = ${data.closingPrayer}
+    WHERE id = ${id}
+  `;
+}
 
-// export async function deleteMeeting(id: number): Promise<boolean> {
-//   throw new Error("deleteMeeting: database implementation coming in Week 04");
-// }
+export async function deleteMeetingDb(id: number): Promise<void> {
+  const sql = getSql();
+  await sql`DELETE FROM meetings WHERE id = ${id}`;
+}
