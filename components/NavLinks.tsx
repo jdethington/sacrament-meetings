@@ -7,8 +7,11 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/meetings", label: "Meetings" },
+    { label: "Home", href: "/" },
+    { label: "Meetings", href: "/meetings" },
+    { label: "Current Meeting", href: "/meetings/current" },
+    { label: "Login", href: "/login" },
+    // { label: "Sign Out", href: "/" },
   ];
 
   return (

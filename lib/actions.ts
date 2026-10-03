@@ -9,6 +9,17 @@ import {
   deleteMeetingDb,
 } from "@/lib/meetings-db";
 import type { MeetingType, SacramentMeeting } from "@/lib/types";
+import { auth, signIn, signOut, handlers } from "@/auth";
+import { AuthError } from "next-auth";
+
+// Guard mutations
+async function requireSession() {
+  const session = await auth();
+  if (!session?.user) {
+    throw new Error("Not authenticated");
+  }
+  return session;
+}
 
 // ---------------------------------------------------------------------------
 // Zod schema — validates raw FormData before any DB write
@@ -151,6 +162,8 @@ export async function createMeeting(
   prevState: State | void,
   formData: FormData,
 ): Promise<State | void> {
+  await requireSession(); // guard mutation
+
   const parsed = MeetingFormSchema.safeParse(rawFromFormData(formData));
 
   if (!parsed.success) {
@@ -178,6 +191,8 @@ export async function updateMeeting(
   prevState: State | void,
   formData: FormData,
 ): Promise<State | void> {
+  await requireSession(); // guard mutation
+
   const parsed = MeetingFormSchema.safeParse(rawFromFormData(formData));
 
   if (!parsed.success) {
@@ -204,6 +219,8 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(id: string) {
+  await requireSession(); // guard mutation
+
   const meetingId = Number(id);
 
   try {
@@ -214,4 +231,23 @@ export async function deleteMeeting(id: string) {
   }
 
   revalidatePath("/meetings");
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid email or password.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error; // allow redirect to complete
+  }
 }

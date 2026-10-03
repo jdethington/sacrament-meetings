@@ -5,7 +5,7 @@ export default function MeetingsLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <section className="flex flex-col items-center w-full min-h-screen py-6 print:min-h-0 print:py-0">
-      <MeetingsNav />
+      {/* <MeetingsNav /> */}
       {children}
     </section>
   );

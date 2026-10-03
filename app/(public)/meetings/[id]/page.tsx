@@ -2,7 +2,25 @@
 import MeetingDetails from "@/components/MeetingDetails";
 import PrintButton from "@/components/PrintButton";
 import { getMeetingById } from "@/lib/meetings-db";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+// app/(public)/meetings/[id]/page.tsx
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const meeting = await getMeetingById(Number(id));
+  if (!meeting) {
+    return { title: "Meeting Not Found" };
+  }
+  return {
+    title: `Meeting ${meeting.date}`,
+    description: `${meeting.meetingType} meeting conducted by ${meeting.conducting}.`,
+  };
+}
 
 export default async function MeetingIdPage({
   params,

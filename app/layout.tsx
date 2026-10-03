@@ -15,8 +15,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sacrament Meetings",
-  description: "A simple app to track sacrament meeting talks and speakers.",
+  title: {
+    default: "Catalina Ward Sacrament Meetings",
+    template: "%s | Catalina Ward",
+  },
+  description: "View and manage sacrament meeting programs for Catalina Ward.",
+  metadataBase: new URL("https://sacrament-meetings-coral.vercel.app"), // your real URL
+  openGraph: {
+    title: "Catalina Ward Sacrament Meetings",
+    description:
+      "View and manage sacrament meeting programs for Catalina Ward.",
+    images: ["/opengraph-image.png"], // or rely on file convention below
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

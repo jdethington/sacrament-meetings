@@ -107,7 +107,6 @@ export async function getMeetingById(
   return (rows[0] as unknown as SacramentMeeting) ?? null;
 }
 
-// Mutation stubs — Week 04
 export async function addMeeting(
   data: Omit<SacramentMeeting, "id">,
 ): Promise<void> {
