@@ -1,20 +1,20 @@
 // components/SignOutButton.tsx
-import { signOut } from "@/auth";
+"use client";
 
-export default function SignOutButton() {
+import { signOut } from "next-auth/react";
+
+type SignOutButtonProps = {
+  className?: string;
+};
+
+export default function SignOutButton({ className }: SignOutButtonProps) {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut({ redirectTo: "/" });
-      }}
+    <button
+      type="button"
+      onClick={() => void signOut({ redirectTo: "/" })}
+      className={className}
     >
-      <button
-        type="submit"
-        className="text-sm text-slate-700 underline hover:text-slate-900"
-      >
-        Sign out
-      </button>
-    </form>
+      Sign Out
+    </button>
   );
 }

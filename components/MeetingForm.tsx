@@ -20,6 +20,7 @@ export default function MeetingForm({
 }: MeetingFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
   const currentState = state ?? initialState;
+  const dateHasError = Boolean(currentState.errors?.date?.length);
 
   return (
     <form
@@ -38,7 +39,12 @@ export default function MeetingForm({
           required
           defaultValue={meeting?.date ?? ""}
           aria-describedby="date-error"
-          className="w-full border rounded px-3 py-2"
+          aria-invalid={dateHasError}
+          className={`w-full border rounded px-3 py-2 ${
+            dateHasError
+              ? "border-red-500 ring-1 ring-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+              : ""
+          }`}
         />
         <div id="date-error" aria-live="polite" aria-atomic="true">
           {currentState.errors?.date?.map((e) => (
@@ -76,7 +82,6 @@ export default function MeetingForm({
           ))}
         </div>
       </div>
-
       {/* Presiding / Conducting */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -125,7 +130,6 @@ export default function MeetingForm({
           </div>
         </div>
       </div>
-
       {/* Prayers */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -177,7 +181,6 @@ export default function MeetingForm({
           </div>
         </div>
       </div>
-
       {/* Opening hymn */}
       <fieldset className="border rounded p-4 space-y-3">
         <legend className="text-sm font-medium px-1">Opening Hymn</legend>
@@ -234,7 +237,6 @@ export default function MeetingForm({
           </div>
         </div>
       </fieldset>
-
       {/* Sacrament hymn */}
       <fieldset className="border rounded p-4 space-y-3">
         <legend className="text-sm font-medium px-1">Sacrament Hymn</legend>
@@ -291,7 +293,6 @@ export default function MeetingForm({
           </div>
         </div>
       </fieldset>
-
       {/* Closing hymn */}
       <fieldset className="border rounded p-4 space-y-3">
         <legend className="text-sm font-medium px-1">Closing Hymn</legend>
@@ -348,7 +349,6 @@ export default function MeetingForm({
           </div>
         </div>
       </fieldset>
-
       {/* Optional fields */}
       <div>
         <label
@@ -365,7 +365,6 @@ export default function MeetingForm({
           className="w-full border rounded px-3 py-2"
         />
       </div>
-
       <div className="flex items-center gap-2">
         <input
           id="stakeBusiness"
@@ -378,7 +377,6 @@ export default function MeetingForm({
           Stake business
         </label>
       </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label
@@ -411,7 +409,6 @@ export default function MeetingForm({
           />
         </div>
       </div>
-
       <div>
         <label
           htmlFor="wardBusiness"
@@ -427,13 +424,11 @@ export default function MeetingForm({
           className="w-full border rounded px-3 py-2"
         />
       </div>
-
       {currentState.message ? (
         <p className="text-sm text-red-600" role="alert">
           {currentState.message}
         </p>
       ) : null}
-
       <div className="flex gap-4 pt-2">
         <button
           type="submit"

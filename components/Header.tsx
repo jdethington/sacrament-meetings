@@ -1,6 +1,11 @@
+// components/Header.tsx
+import { auth } from "@/auth";
 import NavLinks from "./NavLinks";
 
-export default function Header() {
+export default async function Header() {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+
   const currentDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -13,7 +18,7 @@ export default function Header() {
       <div className="max-w-5xl mx-auto flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold tracking-tight">Catalina Ward</h1>
         <p className="text-sm text-gray-300">{currentDate}</p>
-        <NavLinks />
+        <NavLinks isLoggedIn={isLoggedIn} />
       </div>
     </header>
   );

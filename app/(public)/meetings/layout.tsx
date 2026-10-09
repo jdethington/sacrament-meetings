@@ -1,5 +1,3 @@
-import MeetingsNav from "@/components/MeetingsNav";
-
 export default function MeetingsLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

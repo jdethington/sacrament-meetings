@@ -9,7 +9,7 @@ import {
   deleteMeetingDb,
 } from "@/lib/meetings-db";
 import type { MeetingType, SacramentMeeting } from "@/lib/types";
-import { auth, signIn, signOut, handlers } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 // Guard mutations
@@ -175,13 +175,29 @@ export async function createMeeting(
 
   const meeting = formDataToMeeting(parsed.data);
 
-  try {
-    await addMeeting(meeting);
-  } catch (error) {
-    console.error("Error creating meeting:", error);
-    return { message: "Database Error: Failed to create meeting." };
+try {
+  await addMeeting(meeting);
+} catch (error: unknown) {
+  console.error("Error creating meeting:", error);
+
+  const message = error instanceof Error ? error.message : "";
+  const isDuplicateDate =
+    message.includes("meetings_date_key") || message.includes("duplicate key");
+
+  if (isDuplicateDate) {
+    return {
+      errors: {
+        date: [
+          "A meeting for this date already exists. Choose another date or edit the existing one.",
+        ],
+      },
+      message: "Could not create meeting.",
+    };
   }
 
+  return { message: "Database Error: Failed to create meeting." };
+  }
+  
   revalidatePath("/meetings");
   redirect("/meetings");
 }
@@ -250,4 +266,8 @@ export async function authenticate(
     }
     throw error; // allow redirect to complete
   }
+}
+
+export async function logout() {
+  await signOut({ redirectTo: "/" });
 }
